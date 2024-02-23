@@ -5,7 +5,7 @@ import "./globals.css";
 const inter = Inter({ subsets: ["latin"] });
 
 export const metadata: Metadata = {
-  title: "Weather App | Next.Js",
+  title: "Abhijay's Weather App",
   description: "Crafted by Abhijay Rajvansh",
 };
 
