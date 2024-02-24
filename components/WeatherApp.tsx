@@ -43,21 +43,19 @@ export default function WeatherApp () {
       setWeatherData(res.data)
     }
     catch (error) {
-      console.log('oops, caught some error!')
+      console.log('oops, caught an error or bad request!')
     } 
   }
 
+  // get executed once, on mount
   useEffect (() => {
     getWeatherData('London')
-    // get executed on mount
   }, [])
 
   function handleClick () {
-    console.log(`fetching weather_API_URL using ${searchQuery}`)
     getWeatherData(searchQuery)
   }
 
-  
   return (
     <section className="h-[550px] w-[390px] bg-gradient-to-b from-[#4B14D3] to-[#353C91] shadow-2xl rounded-xl px-10 py-10 flex flex-col items-center justify-between">
       <div className="flex space-x-5 w-full">
@@ -66,25 +64,33 @@ export default function WeatherApp () {
           <MagnifyingGlassIcon onClick={handleClick} className='text-black h-10 p-2 bg-white rounded-[50%] hover:bg-gray-200'/>
         </button>
       </div>
-      <img src={weatherData?.current.condition.icon} alt="weatherSvg" className="h-[150px]" />
-      <h1 className='text-6xl font-medium'>{weatherData?.current.temp_c}°C</h1>
-      <h3 className='text-3xl text-center'>{weatherData?.location.name}, {weatherData?.location.country}</h3>
-        <div className="flex justify-between w-full">      
-         <div className="flex items-center justify-center space-x-3">
-            <FaWater className='size-[35px]'/>
-            <div>
-              <p className='text-2xl'>{weatherData?.current.humidity}%</p>
-              <p>Humidity</p>
+
+      { weatherData ? (
+        <>
+            <img src={weatherData.current.condition.icon} alt="weatherSvg" className="h-[150px]" />
+            <h1 className='text-6xl font-medium'>{weatherData.current.temp_c}°C</h1>
+            <h3 className='text-3xl text-center'>{weatherData.location.name}, {weatherData.location.country}</h3>
+            <div className="flex justify-between w-full">
+              <div className="flex items-center justify-center space-x-3">
+                <FaWater className='size-[35px]'/>
+                <div>
+                  <p className='text-2xl'>{weatherData.current.humidity}%</p>
+                  <p>Humidity</p>
+                </div>
+              </div>
+              <div className="flex items-center justify-center space-x-3">
+                <FaWind className='size-[35px]'/>
+                <div>
+                  <p className='text-2xl'>{weatherData.current.wind_kph} km/h</p>
+                  <p>Wind Speed</p>
+                </div>
+              </div>
             </div>
-          </div>
-          <div className="flex items-center justify-center space-x-3">
-            <FaWind className='size-[35px]'/>
-            <div>
-              <p className='text-2xl'>{weatherData?.current.wind_kph} km/h</p>
-              <p>Wind Speed</p>
-            </div>
-          </div>
-        </div>
+          </>
+        ) : (
+          <h1 className='text-3xl font-medium h-full flex items-center'>Loading...</h1>
+        )
+      }
     </section>
   )
 }
